@@ -9,7 +9,8 @@ int ffib(int n) {
 	int minus1 = 0;
 	int minus2 = 0;
 	int this = 0;
-	
+	one = 1;
+       	zero = 0;
 	if (n == 0) {
 		future_set(fibfut[0], (char*) &zero);
 		return OK;

@@ -5,4 +5,4 @@ uint future_prod(future_t* fut, char* value);
 uint future_cons(future_t* fut);
 int ffib(int);
 extern future_t **fibfut;
-extern int one= 1, two=2, zero=0;
+extern int one, two, zero;

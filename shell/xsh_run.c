@@ -55,7 +55,8 @@ int futures_test(char *args[]){
 	if(strncmp(args[2], "-pc", 3) == 0){
 		f_exclusive = future_alloc(FUTURE_EXCLUSIVE, sizeof(int), 1);
 		f_shared    = future_alloc(FUTURE_SHARED, sizeof(int), 1);
-		
+		one = 1;
+		two = 2;
 		// Test FUTURE_EXCLUSIVE
 		resume( create(future_cons, 1024, 20, "fcons1", 1, f_exclusive) );
 		resume( create(future_prod, 1024, 20, "fprod1", 2, f_exclusive, (char*) &one) );
@@ -73,7 +74,7 @@ int futures_test(char *args[]){
 		if (fib > -1) {
 			int final_fib;
 			int future_flags = FUTURE_SHARED; // TODO - add appropriate future mode here
-			
+				
 			// create the array of future pointers
 			if ((fibfut = (future_t **)getmem(sizeof(future_t *) * (fib + 1))) == (future_t **) SYSERR) {
 				printf("getmem failed\n");

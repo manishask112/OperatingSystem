@@ -83,6 +83,7 @@ syscall future_get(future_t* f, char* data){
 			}
 			suspend(pid);
 		}
+		//kprintf("in get and about to memcpy %d\n",(int)f->data);
 		memcpy(data,f->data,f->size);
 	}
 	restore(mask);	
@@ -113,6 +114,7 @@ syscall future_set(future_t* f, char* data){
 	else if(f->mode == FUTURE_SHARED){
 		if (f->state == FUTURE_EMPTY){
 			f->state = FUTURE_WAITING;
+			//kprintf("In set and about to memcpy data %d\n",(int)f->data);
 			memcpy(f->data,data,f->size);
 			f->state = FUTURE_READY;
 			queue* temp = f->get_queue;
