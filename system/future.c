@@ -57,12 +57,29 @@ syscall future_get(future_t* f, char* data){
 	if (f->mode == FUTURE_EXCLUSIVE){
 		if (f->pid != 0)
 		{	
+			//restore(mask);
+			if (f->get_queue == NULL){ //First process to request for access to future
+				f->get_queue = (queue*)getmem(sizeof(queue));
+				f->get_queue->pid = getpid();
+				f->get_queue->next = NULL;
+			}
+			else{
+				queue* temp = f->get_queue;
+				while(temp->next != NULL)
+					temp = temp->next;
+				temp->next = (queue*)getmem(sizeof(queue));
+				temp->next->pid = getpid();
+				temp->next->next = NULL;
+			}
+			suspend(getpid());
 			restore(mask);
 			return SYSERR; //to allow only one process to access future.
 		}
 		f->pid = getpid();
 		if (f->state != FUTURE_READY) suspend(f->pid);
-		memcpy(data,f->data,f->size);			
+		memcpy(data,f->data,f->size);
+		f->pid = 0;
+		f->state = FUTURE_EMPTY;		
 	}
 	else if(f->mode == FUTURE_SHARED){
 		//pid32 pid = getpid();
@@ -107,8 +124,14 @@ syscall future_set(future_t* f, char* data){
 		}
 		else
 		{
-			restore(mask);
-			return SYSERR;//Future data can be set only once
+			queue* temp = f->get_queue;
+			while(temp){    //While loop to resume all consumers that cannot consume the future
+				resume(temp->pid);
+				f->get_queue = f->get_queue->next;
+				temp = f->get_queue;
+			}
+			//restore(mask);
+			//return SYSERR;//Future data can be set only once
 		}	
 	}
 	else if(f->mode == FUTURE_SHARED){

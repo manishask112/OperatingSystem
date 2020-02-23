@@ -12,7 +12,7 @@ uint future_cons(future_t* fut) {
 	  int i, status;
 	  status = (int) future_get(fut, (char*) &i);
 	  if (status < 1) {
-	  	printf("future_get failed\n");
+	  	kprintf("future_get failed\n");
 		return -1;
 	  }
 	  kprintf("Consumed %d\n", i);
