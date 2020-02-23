@@ -7,7 +7,7 @@
 //#include <semaphore.h>              
 
 // definition of array, semaphores and indices 
-int arr_q[BUFFSIZE], writeq, readq;
+int arr_q[BUFFSIZE], writeq, readq, one, two;
 sid32 psem, csem, mutex;
 int prodcons_bb(int nargs, char *args[]) {
 //create and initialize semaphores to necessary values
@@ -50,7 +50,7 @@ int prodcons_bb(int nargs, char *args[]) {
 }
 
 int futures_test(char *args[]){
-	int fib = -1, i, one=1, two=2;
+	int fib = -1, i;
 	future_t* f_exclusive, * f_shared;
 	if(strncmp(args[2], "-pc", 3) == 0){
 		f_exclusive = future_alloc(FUTURE_EXCLUSIVE, sizeof(int), 1);
