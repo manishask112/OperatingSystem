@@ -2,13 +2,14 @@
 #include <future.h>
 #include <prodcons_f.h>
 
+future_t **fibfut;
+int one,zero;
 int ffib(int n) {
 
 	int minus1 = 0;
 	int minus2 = 0;
 	int this = 0;
-	int zero = 0;
-	int one = 1;
+	
 	if (n == 0) {
 		future_set(fibfut[0], (char*) &zero);
 		return OK;
