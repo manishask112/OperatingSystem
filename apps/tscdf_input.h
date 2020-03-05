@@ -1,4 +1,4 @@
-nput (sizeof (stream_input) / sizeof (const char *))
+input (sizeof (stream_input) / sizeof (const char *))
 
 const char *stream_input[] = {\
 	"0\t10\t10",					\
