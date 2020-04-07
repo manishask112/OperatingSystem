@@ -26,6 +26,11 @@ typedef struct future_t {
 	pid32 pid;
 	queue* set_queue;
 	queue* get_queue;
+	
+	uint16 max_elems;
+	uint16 count;
+	uint16 head;
+	uint16 tail;
 } future_t;
 
 /* Interface for the Futures system calls */
