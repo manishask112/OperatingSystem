@@ -14,9 +14,9 @@ future_t* future_alloc(future_mode_t mode, uint size, uint nelems){
 	new_future->get_queue = NULL;
 	
 	new_future->max_elems = nelems;
-	new_future->uint16 count = 0;
-	new_future->uint16 head = 0;
-	new_future->uint16 tail = 0;
+	new_future->count = 0;
+	new_future->head = 0;
+	new_future->tail = 0;
 	restore(mask);
 	return new_future;
 }
