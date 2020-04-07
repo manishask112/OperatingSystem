@@ -175,27 +175,30 @@ shellcmd xsh_run(int nargs, char *args[]){
 	}
 	else if(strncmp(args[1],"futures_test",12) == 0){
 		if(nargs<=2){
-			printf("Need an option (-pc/-f)\n");
+			printf("Need an option (-pc/-f/-fq1/-fq2/-fq3)\n");
 			return 1;
 		}
 		if(strncmp(args[2],"-pc",3)!=0 && strncmp(args[2],"-f",2)!=0 && strncmp(args[2],"-fq1",4)!=0 && strncmp(args[2],"-fq2",4)!=0 && strncmp(args[2],"-fq3",4)!=0){
-			printf("Only two options allowed (-pc/-f/-fq1/-fq2/-fq3)\n");
+			printf("Only five options allowed (-pc/-f/-fq1/-fq2/-fq3)\n");
 			return 1;
 		}
-		if(strncmp(args[2],"-f",2)==0){
-			if (nargs!=4){
-				printf("Need to provide a value for sum upto Nth value\n");
-				return 1;
-			}
-		}	
-		if(strncmp(args[2],"-pc",3)==0 && strncmp(args[2],"-f",2)==0)
-			resume (create((void *)futures_test, 4096, 20, "futures_test", 1, args));
 		if(strncmp(args[2],"-fq1",4)==0)
 			resume (create((void *)futureq_test1, 4096, 20, "futureq_test1", 2,nargs, args));
 		else if(strncmp(args[2],"-fq2",4)==0)
 			resume (create((void *)futureq_test2, 4096, 20, "futureq_test2", 2,nargs, args));
-		else
-			resume (create((void *)futureq_test3, 4096, 20, "futureq_test3", 2,nargs, args));	
+		else if(strncmp(args[2],"-fq3",4)==0)
+			resume (create((void *)futureq_test3, 4096, 20, "futureq_test3", 2,nargs, args));
+		else if(strncmp(args[2],"-f",2)==0){
+			if (nargs!=4){
+				printf("Need to provide a value for sum upto Nth value\n");
+				return 1;
+			}
+			else
+				resume (create((void *)futures_test, 4096, 20, "futures_test", 1, args));
+		}	
+		else if(strncmp(args[2],"-pc",3)==0)
+			resume (create((void *)futures_test, 4096, 20, "futures_test", 1, args));
+			
 	}
 	else if(strncmp(args[1],"tscdf",5) == 0)
 		resume (create((int*)stream_proc, 4096, 20, "stream_proc", 2, nargs, args));
