@@ -109,34 +109,41 @@ syscall future_get(future_t* f, char* data){
 		memcpy(data,f->data,f->size);
 	}
 	else if(f->mode == FUTURE_QUEUE){
-		if(f->state == FUTURE_EMPTY){
+		if(f->state != FUTURE_READY){
+			//kprintf("data queue is empty, can't consume\n");
 			pid32 pid = getpid();
 			f->state = FUTURE_WAITING;
 			if (f->get_queue == NULL){ //First process to request for access to future
 				f->get_queue = (queue*)getmem(sizeof(queue));
 				f->get_queue->pid = pid;
 				f->get_queue->next = NULL;
+				//kprintf("Adding first element to get queue: %s\n",data);
 			}
 			else{
 				queue* temp = f->get_queue;
-				while(temp->next != NULL)
+				//kprintf("Traversing get queue to insert into new position\n");
+				while(temp->next != NULL){
+					//kprintf("%d\n",temp->pid);
 					temp = temp->next;
+				}
 				temp->next = (queue*)getmem(sizeof(queue));
 				temp->next->pid = pid;
 				temp->next->next = NULL;
+				//kprintf("Added %d to the end of get queue\n",temp->next->pid);
 			}
 			suspend(pid);
 		}
-		if(f->count != 0){
+		if(f->state == FUTURE_READY){
 			char* headelemptr = f->data + (f->head * f->size);
 			memcpy(data,headelemptr,f->size);
-			f->head += 1;
-			f->count -= 1;
+			f->head = (f->head + 1) % f->max_elems;
+			f->count--;
+			//kprintf("new head and count after consumption is %d and %d\n",f->head,f->count);
 			if (f->count == 0)
 				f->state = FUTURE_EMPTY;
-		}
 		
-		if(!f->set_queue){
+		}
+		if(f->set_queue != NULL){
 			struct queue* tmp = f->set_queue;
 			f->set_queue = f->set_queue->next;
 			resume(tmp->pid);	
@@ -195,34 +202,42 @@ syscall future_set(future_t* f, char* data){
 	else if(f->mode == FUTURE_QUEUE){
 		if(f->count == f->max_elems){
 				pid32 pid = getpid();
+				//kprintf("data queue is full, can't produce\n");
 				if (f->set_queue == NULL){ //First process to request for access to future
 					f->set_queue = (queue*)getmem(sizeof(queue));
 					f->set_queue->pid = pid;
 					f->set_queue->next = NULL;
+					//kprintf("Added first element into set queue: %d\n",pid);
 				}
 				else{
 					queue* temp = f->set_queue;
-					while(temp->next != NULL)
+					//kprintf("Traversing set queue to insert into the end\n");
+					while(temp->next != NULL){
+						//kprintf("%d\n",temp->pid);
 						temp = temp->next;
+					}
 					temp->next = (queue*)getmem(sizeof(queue));
 					temp->next->pid = pid;
 					temp->next->next = NULL;
+					//kprintf("Added %d to the end of set queue\n",temp->next->pid);
 				}
 				suspend(pid);
 		}
 		if(f->count != f->max_elems){
 			char* tailelemptr = f->data + (f->tail * f->size);
 			memcpy(tailelemptr,data,f->size);
-			f->tail += 1;
-			f->count += 1;
+			f->tail = (f->tail + 1) % f->max_elems;
+			f->count++;
+			//kprintf("New tail and count of data queue is %d and %d\n",f->tail,f->count);
 			f->state = FUTURE_READY;
-		}	
-		
-		if(!f->get_queue){
+			
+		}
+		if(f->get_queue != NULL){
 			struct queue* tmp = f->get_queue;
 			f->get_queue = f->get_queue->next;
 			resume(tmp->pid);			
 		}
+		
 			
 	}
 	restore(mask);
