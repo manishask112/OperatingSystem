@@ -1,5 +1,5 @@
 #include <xinu.h>
-
+#include <future.h>
 
 typedef struct data_element {
 	int32 time;
