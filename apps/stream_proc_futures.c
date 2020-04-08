@@ -102,7 +102,6 @@ void stream_consumer_future(int32 id, future_t *f){
     de *data = (de*)getmem(sizeof(de));
     future_get(f,data);
 	if (data->time == 0){
-		kprintf("stream_consumer exiting\n");
 		ptsend(pcport,getpid());
 		return;
 	}
