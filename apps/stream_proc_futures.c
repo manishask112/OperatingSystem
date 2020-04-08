@@ -65,8 +65,7 @@ int stream_proc_futures(int nargs, char* args[]) {
 		while (*a++ != '\t');
 		v = atoi(a);
 			
-
-        de data = (de*)getmem(sizeof(de));
+        de *data = (de *)getmem(sizeof(de));
         data->time = ts;
         data->value = v;
 
@@ -100,14 +99,14 @@ void stream_consumer_future(int32 id, future_t *f){
  int32 *qarray;
  sprintf(s, "s%d", id);
  while(1){
-    de data = (de*)getmem(sizeof(de));
+    de *data = (de*)getmem(sizeof(de));
     future_get(f,data);
 	if (data->time == 0){
 		kprintf("stream_consumer exiting\n");
 		ptsend(pcport,getpid());
 		return;
 	}
-	if(tscdf_update(tc, str->queue[str->head]->time, str->queue[str->head]->value)){
+	if(tscdf_update(tc, data->time, data->value)){
 		count+= 1;
 		if(count == output_time){
 
