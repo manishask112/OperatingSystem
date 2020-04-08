@@ -92,7 +92,7 @@ int stream_proc_futures(int nargs, char* args[]) {
 
 
 void stream_consumer_future(int32 id, future_t *f){
- kprintf("stream_consumer id:%d (pid:%d)\n",id,getpid());
+ kprintf("stream_consumer_future id:%d (pid:%d)\n",id,getpid());
  char s[50];
  int count = 0;
  struct tscdf *tc = tscdf_init(time_window);
