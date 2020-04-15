@@ -117,7 +117,7 @@ syscall future_get(future_t* f, char* data){
 				f->get_queue = (queue*)getmem(sizeof(queue));
 				f->get_queue->pid = pid;
 				f->get_queue->next = NULL;
-				//kprintf("Adding first element to get queue: %s\n",data);
+				//kprintf("Empty %d\n",pid);
 			}
 			else{
 				queue* temp = f->get_queue;
@@ -129,24 +129,25 @@ syscall future_get(future_t* f, char* data){
 				temp->next = (queue*)getmem(sizeof(queue));
 				temp->next->pid = pid;
 				temp->next->next = NULL;
-				//kprintf("Added %d to the end of get queue\n",temp->next->pid);
+				//kprintf("Waiting %d\n",pid);
 			}
 			suspend(pid);
 		}
-		if(f->state == FUTURE_READY){
+		//if(f->state == FUTURE_READY){
 			char* headelemptr = f->data + (f->head * f->size);
 			memcpy(data,headelemptr,f->size);
 			f->head = (f->head + 1) % f->max_elems;
 			f->count--;
-			//kprintf("new head and count after consumption is %d and %d\n",f->head,f->count);
+			//kprintf("Consumed from data queue%d\n",(int)*data);
 			if (f->count == 0)
 				f->state = FUTURE_EMPTY;
 		
-		}
+	
 		if(f->set_queue != NULL){
 			struct queue* tmp = f->set_queue;
 			f->set_queue = f->set_queue->next;
-			resume(tmp->pid);	
+			resume(tmp->pid);
+			//printf("resumed first process in set Q\n");	
 		}
 	}
 	restore(mask);	
@@ -207,7 +208,7 @@ syscall future_set(future_t* f, char* data){
 					f->set_queue = (queue*)getmem(sizeof(queue));
 					f->set_queue->pid = pid;
 					f->set_queue->next = NULL;
-					//kprintf("Added first element into set queue: %d\n",pid);
+					//kprintf("Added first element into set queue: %d\n",(int)*data);
 				}
 				else{
 					queue* temp = f->set_queue;
@@ -219,19 +220,19 @@ syscall future_set(future_t* f, char* data){
 					temp->next = (queue*)getmem(sizeof(queue));
 					temp->next->pid = pid;
 					temp->next->next = NULL;
-					//kprintf("Added %d to the end of set queue\n",temp->next->pid);
+					//kprintf("Added %d to the end of set queue\n",(int)*data);
 				}
 				suspend(pid);
 		}
-		if(f->count != f->max_elems){
+		//if(f->count != f->max_elems){
 			char* tailelemptr = f->data + (f->tail * f->size);
 			memcpy(tailelemptr,data,f->size);
 			f->tail = (f->tail + 1) % f->max_elems;
 			f->count++;
-			//kprintf("New tail and count of data queue is %d and %d\n",f->tail,f->count);
+			//kprintf("Adding %d into data Q\n",(int)*data);
 			f->state = FUTURE_READY;
 			
-		}
+		
 		if(f->get_queue != NULL){
 			struct queue* tmp = f->get_queue;
 			f->get_queue = f->get_queue->next;
@@ -242,4 +243,4 @@ syscall future_set(future_t* f, char* data){
 	}
 	restore(mask);
 	return OK;
-}
+	}
