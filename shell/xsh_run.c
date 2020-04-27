@@ -204,8 +204,8 @@ shellcmd xsh_run(int nargs, char *args[]){
 	else if (strncmp(args[1],"tscdf_fq",8) == 0)
 		resume (create((int*)stream_proc_futures, 4096, 20, "stream_proc_futures", 2, nargs, args));
 	else if(strncmp(args[1],"tscdf",5) == 0)
-		resume (create((int*)stream_proc, 4096, 20, "stream_proc", 2, nargs - 1, args));
+		resume (create((int*)stream_proc, 4096, 20, "stream_proc", 2, nargs, args));
 	else if(strncmp(args[1],"fstest",6) == 0)
-		resume(create((uint *) fstest, 4096, 20, "fstest", 2, nargs, args));
+		resume(create((uint *) fstest, 4096, 20, "fstest", 2, nargs - 1, args));
 
 }	
