@@ -242,7 +242,6 @@ int fs_open(char *filename, int flags) {
 }
 
 int fs_close(int fd) {
-  printf("\nfd for closing %d",fd);
   if (fd>=0 && fd< next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
       printf("File already closed \n");
@@ -320,6 +319,7 @@ int fs_seek(int fd, int offset) {
     return SYSERR;
   }
   oft[fd].fileptr += offset;
+  printf("file ptr %d",oft[fd].fileptr)
   return OK;
 }
 
