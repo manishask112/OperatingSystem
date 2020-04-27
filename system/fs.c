@@ -333,7 +333,7 @@ int fs_read(int fd, void *buf, int nbytes) {
   }
   blocks_to_read = (blocks_to_read < in.size ? blocks_to_read:in.size);
   int first_block_to_read = oft[fd].fileptr / fsd.blocksz;
-  int blocks_read = 0
+  int blocks_read = 0;
   int offset = oft[fd].fileptr % fsd.blocksz;
   int read = 0
   while (blocks_read < blocks_to_read){
@@ -418,7 +418,7 @@ int fs_write(int fd, void *buf, int nbytes) {
   int block = 0;
 
   while(bytes_left > 0 && j < fsd.nblocks){
-    int bytes_to_write = (fsd.blocksz < bytes_left  ? fsd.blocksz:bytesToWrite);
+    int bytes_to_write = (fsd.blocksz < bytes_left  ? fsd.blocksz:bytes_left);
     
     if(first_block_to_write < in.size){
       block = in.blocks[first_block_to_write++];
@@ -452,9 +452,8 @@ int fs_write(int fd, void *buf, int nbytes) {
     }
   oft[fd].fileptr += nbytes;
   return nbytes;
-  }
-
 }
+
 
 int fs_link(char *src_filename, char* dst_filename) {
   return SYSERR;
