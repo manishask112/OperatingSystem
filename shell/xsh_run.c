@@ -2,7 +2,8 @@
 #include <prodcons_bb.h>  
 #include <stdlib.h>
 #include <prodcons_f.h>
-#include <stream.h>              
+#include <stream.h>     
+#include <fs.h>         
 
 // definition of array, semaphores and indices 
 int arr_q[BUFFSIZE], writeq, readq, one, two;
