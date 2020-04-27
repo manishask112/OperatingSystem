@@ -242,7 +242,7 @@ int fs_open(char *filename, int flags) {
 }
 
 int fs_close(int fd) {
-  print("\nfd for closing %d",fd);
+  printf("\nfd for closing %d",fd);
   if (fd>=0 && fd< next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
       printf("File already closed \n");
