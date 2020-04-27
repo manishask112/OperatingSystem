@@ -358,6 +358,7 @@ int fs_read(int fd, void *buf, int nbytes) {
 }
 
 int fs_write(int fd, void *buf, int nbytes) {   
+  printf("Inside write\n");
   struct inode in;
   if (0 <= fd < next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
