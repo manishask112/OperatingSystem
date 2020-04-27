@@ -289,7 +289,7 @@ int fs_create(char *filename, int mode) {
     // strcpy(fsd.root_dir.entry[fsd.root_dir.numentries].name, filename);
     fsd.root_dir.entry[fsd.root_dir.numentries].inode_num = fsd.inodes_used;
 
-    int this_ptr = next_open_fd++;
+    int this_ptr = ++next_open_fd;
     oft[this_ptr].state = FSTATE_OPEN;
     oft[this_ptr].fileptr = 0;
     oft[this_ptr].in = in;
