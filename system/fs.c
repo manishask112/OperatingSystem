@@ -488,4 +488,4 @@ int fs_link(char *src_filename, char* dst_filename) {
 int fs_unlink(char *filename) {
   return SYSERR;
 }
-// #endif /* FS */8
+#endif /* FS */
