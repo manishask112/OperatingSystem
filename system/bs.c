@@ -86,4 +86,4 @@ int bs_bwrite(int dev, int block, int offset, void * buf, int len) {
 
 }
 
-// #endif /* FS */
+#endif /* FS */
