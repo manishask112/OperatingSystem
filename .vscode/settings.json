@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "stream.h": "c"
+        "stream.h": "c",
+        "xinu.h": "c",
+        "future.h": "c",
+        "fs.h": "c",
+        "prodcons_bb.h": "c",
+        "prodcons_f.h": "c",
+        "stdlib.h": "c"
     }
 }
