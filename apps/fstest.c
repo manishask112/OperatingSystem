@@ -50,9 +50,9 @@ uint fstest(int nargs, char *args[]) {
     
 // Test 1
     // Create test file
-    printf("Calling create\n")
+    printf("Calling create\n");
     fd = fs_create("Test_File", O_CREAT);
-    printf("File created\n")
+    printf("File created\n");
     // Fill buffer with random stuff
     for(i=0; i<SIZE; i++)
     {
