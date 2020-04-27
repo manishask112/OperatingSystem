@@ -337,7 +337,7 @@ int fs_read(int fd, void *buf, int nbytes) {
   int offset = oft[fd].fileptr % fsd.blocksz;
   int read = 0;
   while (blocks_read < blocks_to_read){
-    bytes_to_read = fsd.blocksz - offset;
+    int bytes_to_read = fsd.blocksz - offset;
     if (offset != 0){
       if(bs_bread(dev0, in.blocks[first_block_to_read],offset,block_cache, bytes_to_read) != OK)
         return SYSERR;
