@@ -295,7 +295,11 @@ int fs_create(char *filename, int mode) {
     oft[this_ptr].in = in;
     oft[this_ptr].de = &fsd.root_dir.entry[fsd.root_dir.numentries++];
     oft[this_ptr].flag = O_RDWR;
-    
+    printf("state %d",oft[this_ptr].state);
+    printf("fileptr %d",oft[this_ptr].fileptr);
+    printf("inode id %d",oft[this_ptr].in.id);
+    printf("fileame %s",oft[this_ptr].de.name);
+    print("fd %d",this_ptr);
     return this_ptr;
 }
 
@@ -308,7 +312,7 @@ int fs_read(int fd, void *buf, int nbytes) {
   if(fs_get_inode_by_num(0,oft[fd].in.id, &in) != OK){
       return SYSERR;
     }
-  if (0 <= fd < next_open_fd){
+  if (fd >= 0 && fd< next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
       printf("File is closed \n");
       return SYSERR;
@@ -360,7 +364,7 @@ int fs_read(int fd, void *buf, int nbytes) {
 int fs_write(int fd, void *buf, int nbytes) {   
   printf("Inside write\n");
   struct inode in;
-  if (0 <= fd < next_open_fd){
+  if (fd >= 0 && fd< next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
       printf("File is closed \n");
       return SYSERR;
