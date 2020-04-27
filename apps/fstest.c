@@ -71,7 +71,7 @@ uint fstest(int nargs, char *args[]) {
     // Assuming here implementation of fs_seek is like "original_offset = original_offset + input_offset_from_fs_seek"
     fs_seek(fd,-((rval/2) + 333 )); 
     //read the file 
-    rval = fs_read(fd, buf2, 300);
+    rval = fs_read(fd, buf2, 950);
     buf2[rval] = '\0';
 
     if(rval == 0)
