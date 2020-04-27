@@ -6,6 +6,7 @@
         "fs.h": "c",
         "prodcons_bb.h": "c",
         "prodcons_f.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "typeinfo": "c"
     }
 }
