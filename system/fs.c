@@ -310,7 +310,7 @@ int fs_seek(int fd, int offset) {
     printf("Invalid descriptor \n");
     return SYSERR;
   }
-  no_of_blocks = (oft[fd].fileptr + offset) / fsd.blocksz;
+  int no_of_blocks = (oft[fd].fileptr + offset) / fsd.blocksz;
   if((oft[fd].fileptr + offset) % fsd.blocksz != 0)
     no_of_blocks++;
   
