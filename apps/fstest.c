@@ -52,12 +52,15 @@ uint fstest(int nargs, char *args[]) {
     // Create test file
     fd = fs_create("Test_File", O_CREAT);
     // Fill buffer with random stuff
+    printf("Content to be writen\n");
     for(i=0; i<SIZE; i++)
     {
         j = i%(127-33);
         j = j+33;
         buf1[i] = (char) j;
+        printf("%c",buf1[i]);
     }
+    printf("\n");
     rval = fs_write(fd,buf1,SIZE);
     if(rval == 0 || rval != SIZE )
     {
