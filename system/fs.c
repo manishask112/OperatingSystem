@@ -298,8 +298,8 @@ int fs_create(char *filename, int mode) {
     printf("state %d",oft[this_ptr].state);
     printf("fileptr %d",oft[this_ptr].fileptr);
     printf("inode id %d",oft[this_ptr].in.id);
-    printf("fileame %s",oft[this_ptr].de.name);
-    print("fd %d",this_ptr);
+    printf("fileame %s",oft[this_ptr].de->name);
+    printf("fd %d",this_ptr);
     return this_ptr;
 }
 
