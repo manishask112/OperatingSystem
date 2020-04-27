@@ -101,4 +101,5 @@ int bs_bwrite(int bsdev, int block, int offset, void * buf, int len);
 void fs_printfreemask(void);
 void fs_print_fsd(void);
 
+uint fstest(int nargs, char *args[]);
 #endif /* FS_H */
