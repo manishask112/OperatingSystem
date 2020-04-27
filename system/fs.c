@@ -299,7 +299,27 @@ int fs_create(char *filename, int mode) {
 }
 
 int fs_seek(int fd, int offset) {
-  return SYSERR;
+  
+  if (fd >= 0 && fd< next_open_fd){
+    if(oft[fd].state == FSTATE_CLOSED){
+      printf("File is closed \n");
+      return SYSERR;
+    }
+  }
+  else{
+    printf("Invalid descriptor \n");
+    return SYSERR;
+  }
+  no_of_blocks = (oft[fd].fileptr + offset) / fsd.blocksz;
+  if((oft[fd].fileptr + offset) % fsd.blocksz != 0)
+    no_of_blocks++;
+  
+  if(no_of_blocks > fsd.nblocks){
+    printf("offset out of scope\n");
+    return SYSERR;
+  }
+  oft[fd].fileptr += offset;
+  return OK;
 }
 
 int fs_read(int fd, void *buf, int nbytes) {
@@ -327,7 +347,7 @@ int fs_read(int fd, void *buf, int nbytes) {
   }
   
   int blocks_to_read = nbytes / fsd.blocksz;
-  if(nbytes % fsd.blocksz){
+  if(nbytes % fsd.blocksz != 0){
     blocks_to_read++;
   }
   blocks_to_read = (blocks_to_read < in.size ? blocks_to_read:in.size);
@@ -352,6 +372,9 @@ int fs_read(int fd, void *buf, int nbytes) {
     read = strlen(buf);
     first_block_to_read++;
   }
+  if(fs_put_inode_by_num(0,in.id, &in) != OK){
+      return SYSERR;
+    }
   oft[fd].fileptr += read;
   return read;
 }
@@ -405,7 +428,7 @@ int fs_write(int fd, void *buf, int nbytes) {
       if(bs_bwrite(dev0, in.blocks[first_block_to_write], offset,block_cache, bytes_left) != OK)
         return SYSERR;
       oft[fd].fileptr += nbytes;
-      printf("fptr %d",oft[fd].fileptr);
+      // printf("fptr %d",oft[fd].fileptr);
       return nbytes;
     }
   }
@@ -452,7 +475,7 @@ int fs_write(int fd, void *buf, int nbytes) {
       return SYSERR;
     }
   oft[fd].fileptr += nbytes;
-  printf("fptr %d",oft[fd].fileptr);
+  // printf("fptr %d",oft[fd].fileptr);
   return nbytes;
 }
 
