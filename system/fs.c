@@ -295,11 +295,6 @@ int fs_create(char *filename, int mode) {
     oft[this_ptr].in = in;
     oft[this_ptr].de = &fsd.root_dir.entry[fsd.root_dir.numentries++];
     oft[this_ptr].flag = O_RDWR;
-    printf("state %d",oft[this_ptr].state);
-    printf("fileptr %d",oft[this_ptr].fileptr);
-    printf("inode id %d",oft[this_ptr].in.id);
-    printf("fileame %s",oft[this_ptr].de->name);
-    printf("fd %d",this_ptr);
     return this_ptr;
 }
 
@@ -362,7 +357,7 @@ int fs_read(int fd, void *buf, int nbytes) {
 }
 
 int fs_write(int fd, void *buf, int nbytes) {   
-  printf("Inside write\n");
+  // printf("Inside write\n");
   struct inode in;
   if (fd >= 0 && fd< next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
@@ -410,6 +405,7 @@ int fs_write(int fd, void *buf, int nbytes) {
       if(bs_bwrite(dev0, in.blocks[first_block_to_write], offset,block_cache, bytes_left) != OK)
         return SYSERR;
       oft[fd].fileptr += nbytes;
+      printf("fptr %d",oft[fd].fileptr);
       return nbytes;
     }
   }
@@ -456,6 +452,7 @@ int fs_write(int fd, void *buf, int nbytes) {
       return SYSERR;
     }
   oft[fd].fileptr += nbytes;
+  printf("fptr %d",oft[fd].fileptr);
   return nbytes;
 }
 

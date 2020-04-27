@@ -50,9 +50,7 @@ uint fstest(int nargs, char *args[]) {
     
 // Test 1
     // Create test file
-    printf("Calling create\n");
     fd = fs_create("Test_File", O_CREAT);
-    printf("File created\n");
     // Fill buffer with random stuff
     for(i=0; i<SIZE; i++)
     {
@@ -60,15 +58,11 @@ uint fstest(int nargs, char *args[]) {
         j = j+33;
         buf1[i] = (char) j;
     }
-    printf("Calling write\n");
     rval = fs_write(fd,buf1,SIZE);
     if(rval == 0 || rval != SIZE )
     {
         printf("\n\r File write failed");
         goto clean_up;
-    }
-    else{
-        printf("Wrote\n");
     }
     // Now my file offset is pointing at EOF file, i need to bring it back to start of file
     // Assuming here implementation of fs_seek is like "original_offset = original_offset + input_offset_from_fs_seek"
