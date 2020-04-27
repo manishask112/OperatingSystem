@@ -319,6 +319,7 @@ int fs_seek(int fd, int offset) {
     return SYSERR;
   }
   oft[fd].fileptr += offset;
+  printf("file ptr %d\n",oft[fd].fileptr);
   return OK;
 }
 
