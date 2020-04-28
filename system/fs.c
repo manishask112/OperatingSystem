@@ -515,14 +515,12 @@ int fs_link(char *src_filename, char* dst_filename) {
   return OK;
 }
 
-int fs_unlink(char *filename) {
+int fs_unlink(char *filename) ;{
   // struct inode in;
   if(next_open_fd > 0) { 
     for(int i = 0; i < next_open_fd; i++){
       if(strcmp(oft[i].de->name,filename) == 0){
-          // file found 
-          int inode_number = oft[i].de->inode_num;
-          
+          // file found           
           fs_get_inode_by_num(0,oft[i].de->inode_num, &oft[i].in);
           if(oft[i].in.nlink == 1){
             for (int j = 0; j < oft[i].in.size; j++)
@@ -545,4 +543,4 @@ int fs_unlink(char *filename) {
   return SYSERR;
 }
 
-#endif /* FS */
+// #endif /* FS */
