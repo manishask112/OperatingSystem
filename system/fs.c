@@ -243,7 +243,7 @@ int fs_open(char *filename, int flags) {
   return SYSERR;
 }
 
-int fs_close(int fd) {
+int fs_close(int fd) {  
   if (fd>=0 && fd< next_open_fd){
     if(oft[fd].state == FSTATE_CLOSED){
       printf("File already closed \n");
@@ -540,4 +540,4 @@ int fs_unlink(char *filename) {
   return SYSERR;
 }
 
-// #endif /* FS */
+#endif /* FS */
