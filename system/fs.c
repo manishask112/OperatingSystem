@@ -493,7 +493,7 @@ int fs_link(char *src_filename, char* dst_filename) {
       // src_file_index = i;
       if(fs_get_inode_by_num(0,oft[i].in.id, &in) != OK)
         return SYSERR;
-
+    }
     else if(strcmp(oft[i].de->name,dst_filename) == 0){
       printf("Destination file already exists\n");
       return SYSERR;
@@ -515,7 +515,7 @@ int fs_link(char *src_filename, char* dst_filename) {
   return OK;
 }
 
-int fs_unlink(char *filename) ;{
+int fs_unlink(char *filename) {
   // struct inode in;
   if(next_open_fd > 0) { 
     for(int i = 0; i < next_open_fd; i++){
@@ -543,4 +543,4 @@ int fs_unlink(char *filename) ;{
   return SYSERR;
 }
 
-// #endif /* FS */
+#endif /* FS */
