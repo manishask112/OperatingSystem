@@ -507,7 +507,7 @@ int fs_link(char *src_filename, char* dst_filename) {
   int this_ptr = next_open_fd++;
   in.nlink++;
   oft[this_ptr].in = in;
-  oft[this_ptr].de->inode_num = in.id
+  oft[this_ptr].de->inode_num = in.id;
   memcpy(oft[this_ptr].de->name,dst_filename,FILENAMELEN);
   if(fs_put_inode_by_num(0,in.id, &in) != OK)
         return SYSERR;
@@ -549,4 +549,4 @@ int fs_unlink(char *filename) {
   kprintf("No files");
   return SYSERR;
 }
-// #endif /* FS */
+#endif /* FS */
