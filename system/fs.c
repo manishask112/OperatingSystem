@@ -516,14 +516,14 @@ int fs_link(char *src_filename, char* dst_filename) {
 }
 
 int fs_unlink(char *filename) {
-  int i;
+  struct inode in;
   if(next_open_fd > 0) { 
-    for(i = 0; i<next_open_fd; i++){
+    for(int i = 0; i<next_open_fd; i++){
         if(strcmp(oft[i].de->name,filename) == 0){
           // file found 
           int inode_number = oft[i].de->inode_num;
-          struct inode *in = getmem(sizeof(struct inode));
-          fs_get_inode_by_num(0,inode_number,&oft[i].in);
+          
+          fs_get_inode_by_num(0,inode_number,oft[i].in);
           if(oft[i].in.nlink==1){
             int j = oft[i].fileptr/MDEV_BLOCK_SIZE;
             int nbytes = 1200;
@@ -549,4 +549,4 @@ int fs_unlink(char *filename) {
   kprintf("No files");
   return SYSERR;
 }
-#endif /* FS */
+// #endif /* FS */
