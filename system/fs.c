@@ -549,4 +549,4 @@ int fs_unlink(char *filename) {
   kprintf("No files");
   return SYSERR;
 }
-// #endif /* FS */
+#endif /* FS */
