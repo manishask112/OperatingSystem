@@ -545,4 +545,4 @@ int fs_unlink(char *filename) {
   return SYSERR;
 }
 
-// #endif /* FS */
+#endif /* FS */
